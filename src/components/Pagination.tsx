@@ -21,7 +21,7 @@ export default function Pagination(props: PaginationProps) {
         onClick={() => onPageChange(currentPageNumber - 1)}
         disabled={currentPageNumber === 1}
       >
-        Back
+        &lt;
       </button>
 
       {currentPageNumber > 2 && (
@@ -50,7 +50,7 @@ export default function Pagination(props: PaginationProps) {
         onClick={() => onPageChange(totalPages)}
         disabled={currentPageNumber === totalPages}
       >
-        Last
+        &gt;&gt;
       </button>
     </div>
   );

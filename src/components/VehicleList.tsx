@@ -2,34 +2,42 @@ import { useEffect, useState } from "react";
 import VehicleCard from "./VehicleCard";
 import { getVehicles } from "../api";
 import Pagination from "./Pagination";
+import Navbar from "./Navbar";
 
 export default function VehicleList() {
   const [vehiclesData, setVehiclesData] = useState<object>({});
   const [isLoading, setIsLoading] = useState(true);
   const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
-  const [displayPopup, setDisplayPopup] = useState(false);
+  const [classification, setClassification] = useState("All");
   const totalPages = 4;
+
   useEffect(() => {
-    getVehicles(currentPageNumber)
+    getVehicles(currentPageNumber, classification)
       .then(({ data }) => {
         setVehiclesData(data);
+        console.log(data);
         setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
       });
-  }, [currentPageNumber]);
+  }, [currentPageNumber, classification]);
 
+  const handleSetClassification = (selectedClass: string) => {
+    setClassification(selectedClass);
+  };
   const handlePageChange = (pageNumber: number) => {
     setCurrentPageNumber(pageNumber);
   };
 
   const formElementMobile = (
-    <div>
-      <p>Value Your Car</p>
-      <p>Find out the value of your car in just a few minutes</p>
-      <button>Get Valuation</button>
+    <div className="mobile-form">
+      <div className="form-text">
+        <p className="form-header">Value Your Car</p>
+        <p className="form-subheading">Find out in just a few minutes</p>
+      </div>
+      <button className="valuation-btn">Get Valuation</button>
     </div>
   );
 
@@ -61,46 +69,43 @@ export default function VehicleList() {
   ];
 
   return isLoading ? (
-    <h1>loading</h1>
+    <h1>Loading...</h1>
   ) : (
     <>
-      <section>
-        <div className="navbar">
-          <p className="desktop-car-num"> number of cars</p>
-          <ul className="selectors">
-            <li>new</li>
-            <li>used</li>
-            <li>all</li>
-            <li>offers</li>
-          </ul>
-        </div>
+      <Navbar
+        onSetClassification={handleSetClassification}
+        classification={classification}
+      />
+      <main>
         <div className="controls">
           <p>
             {" "}
-            showing {vehiclesData.meta.per_page} of {vehiclesData.meta.total}{" "}
-            cars
+            Showing {vehiclesData.data.length} of {vehiclesData.meta.total} cars
           </p>
-          <p>dropdown lowest</p>
+          <select name="orderBy" className="orderBy">
+            <option value="lowest-price">Lowest Price</option>
+            <option value="lowest-price">Highest Price</option>
+          </select>
         </div>
-      </section>
-      {vehiclesWithForm.map((vehicle: object) => {
-        if (vehicle.type === "form") {
-          return formElementMobile;
-        } else {
-          return <VehicleCard vehicle={vehicle} key={vehicle.vehicle_id} />;
-        }
-      })}
 
-      <div className="nav-buttons">{}</div>
-      <div className="top-navigation">
-        <a>Back to top</a>
-      </div>
+        {vehiclesWithForm.map((vehicle: object) => {
+          if (vehicle.type === "form") {
+            return formElementMobile;
+          } else {
+            return <VehicleCard vehicle={vehicle} key={vehicle.vehicle_id} />;
+          }
+        })}
 
-      <Pagination
-        currentPageNumber={currentPageNumber}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+        <Pagination
+          currentPageNumber={currentPageNumber}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+
+        <div className="footer">
+          <a href="#top">Back to top</a>
+        </div>
+      </main>
     </>
   );
 }
