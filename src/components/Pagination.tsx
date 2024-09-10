@@ -1,7 +1,6 @@
 import { PaginationProps } from "../interfaces";
 
 export default function Pagination(props: PaginationProps) {
-  console.log(props);
   const { currentPageNumber, totalPages, onPageChange } = props;
   const pagesToShow = [];
 

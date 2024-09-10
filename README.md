@@ -4,5 +4,6 @@ The project is built using React with TypeScript and vanilla CSS and the site is
 the website is hosted at
 
 alternatively, to run the project locally you will need to the following commands:
+cd fe-vehicle-list
 npm i
 npm run dev
