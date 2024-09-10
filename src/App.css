@@ -265,6 +265,7 @@ ul {
     margin: 0.1rem;
     border: solid rgb(209, 214, 224) 1px;
     border-radius: 12px;
+    cursor: pointer;
   }
   .selectors.active {
     border: solid rgb(117, 115, 255) 2px;
@@ -539,6 +540,7 @@ ul {
     margin: 0.1rem;
     border: solid rgb(209, 214, 224) 1px;
     border-radius: 12px;
+    cursor: pointer;
   }
   .selectors.active {
     border: solid rgb(117, 115, 255) 2px;
