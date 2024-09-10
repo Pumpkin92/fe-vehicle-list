@@ -219,6 +219,7 @@ ul {
   display: none;
 }
 
+/* Desktop */
 @media (min-width: 1024px) {
   .desk-vehicle-container {
     display: grid;
@@ -498,7 +499,7 @@ ul {
   }
 }
 
-/* Desktop */
+/* Tablet */
 @media (min-width: 600px) and (max-width: 1024px) {
   .wrapper {
     margin: 0 2rem;
