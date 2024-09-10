@@ -3,9 +3,10 @@ import VehicleCard from "./VehicleCard";
 import { getVehicles } from "../api";
 import Pagination from "./Pagination";
 import Navbar from "./Navbar";
+import { vehicle, vehiclesData } from "../interfaces";
 
 export default function VehicleList() {
-  const [vehiclesData, setVehiclesData] = useState<object>({});
+  const [vehiclesData, setVehiclesData] = useState<vehiclesData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
   const [classification, setClassification] = useState("All");
@@ -15,7 +16,6 @@ export default function VehicleList() {
     getVehicles(currentPageNumber, classification)
       .then(({ data }) => {
         setVehiclesData(data);
-        console.log(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -70,12 +70,12 @@ export default function VehicleList() {
     </form>
   );
 
-  const vehiclesArray = vehiclesData.data || [];
+  const vehiclesArray = vehiclesData?.data || [];
   const middleIndex = Math.floor(vehiclesArray.length / 2 - 1);
-
-  const vehiclesWithForm = [
+  type VehicleOrForm = vehicle | { type: "form" };
+  const vehiclesWithForm: VehicleOrForm[] = [
     ...vehiclesArray.slice(0, middleIndex),
-    formElementDesktop,
+    { type: "form" },
     ...vehiclesArray.slice(middleIndex),
   ];
 
@@ -91,10 +91,11 @@ export default function VehicleList() {
         <div className="controls">
           <p className="mob-displayed-no-of-results">
             {" "}
-            Showing {vehiclesData.data.length} of {vehiclesData.meta.total} cars
+            Showing {vehiclesData?.data.length} of {vehiclesData?.meta.total}{" "}
+            cars
           </p>
           <p className="desk-tab-total-cars-no">
-            Showing {vehiclesData.meta.total} cars
+            Showing {vehiclesData?.meta.total} cars
           </p>
           <select name="orderBy" className="orderBy">
             <option value="lowest-price">Lowest Price</option>
@@ -102,20 +103,20 @@ export default function VehicleList() {
           </select>
         </div>
         <div className="mob-vehicle-container">
-          {vehiclesWithForm.map((vehicle: object) => {
-            if (vehicle.type === "form") {
+          {vehiclesWithForm.map((item: VehicleOrForm, index: number) => {
+            if ("type" in item && item.type === "form") {
               return formElementMobile;
             } else {
-              return <VehicleCard vehicle={vehicle} key={vehicle.vehicle_id} />;
+              return <VehicleCard vehicle={item} key={index} />;
             }
           })}
         </div>
         <div className="desk-vehicle-container">
-          {vehiclesWithForm.map((vehicle: object) => {
-            if (vehicle.type === "form") {
+          {vehiclesWithForm.map((item: VehicleOrForm, index: number) => {
+            if ("type" in item && item.type === "form") {
               return formElementDesktop;
             } else {
-              return <VehicleCard vehicle={vehicle} key={vehicle.vehicle_id} />;
+              return <VehicleCard vehicle={item} key={index} />;
             }
           })}
         </div>

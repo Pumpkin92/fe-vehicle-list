@@ -13,7 +13,6 @@ export default function Pagination(props: PaginationProps) {
   if (currentPageNumber < totalPages) {
     pagesToShow.push(currentPageNumber + 1);
   }
-  console.log(pagesToShow);
 
   return (
     <div className="pagination-div">
@@ -44,7 +43,7 @@ export default function Pagination(props: PaginationProps) {
         onClick={() => onPageChange(currentPageNumber + 1)}
         disabled={currentPageNumber === totalPages}
       >
-        Next
+        &gt;
       </button>
       <button
         onClick={() => onPageChange(totalPages)}

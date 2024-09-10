@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function VehicleCard({ vehicle }: object) {
+export default function VehicleCard({ vehicle }: any) {
   const [favourite, setFavourite] = useState(false);
   const slicedFeatures = vehicle.key_features.slice(0, 4);
 
@@ -8,15 +8,25 @@ export default function VehicleCard({ vehicle }: object) {
     <>
       <div className="vehicle-container">
         <div className="img-container">
-          {vehicle.media_urls.map((img: any) => {
-            return <img className="car-img" src={img.thumb} />;
+          {vehicle.media_urls.map((img: any, index: number) => {
+            return (
+              <img
+                className="car-img"
+                src={img.thumb}
+                alt="car photo"
+                key={index}
+              />
+            );
           })}
         </div>
         <div className="desk-tab-img-container">
-          <img src={vehicle.media_urls[0].medium} />
+          <img
+            src={vehicle.media_urls[0].medium}
+            alt="photo of car against white backdrop"
+          />
 
           <ul className="mapped-feature-elements">
-            {slicedFeatures.map((feature, index) => {
+            {slicedFeatures.map((feature: string, index: number) => {
               return (
                 <>
                   <li key={index}>{feature}</li>
@@ -54,7 +64,7 @@ export default function VehicleCard({ vehicle }: object) {
           <p className="vehicle-derivative">{vehicle.derivative}</p>
           <div className="vehicle-details">
             <ul className="mapped-feature-elements-mobile">
-              {vehicle.key_features.map((feature, index) => {
+              {vehicle.key_features.map((feature: string, index: number) => {
                 return (
                   <>
                     <li key={index}>{feature}</li>

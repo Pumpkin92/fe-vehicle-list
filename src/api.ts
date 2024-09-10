@@ -1,8 +1,5 @@
 import axios from "axios";
-
-interface Response {
-  data: any | object;
-}
+import { Response } from "./interfaces";
 
 export const getVehicles = (pageNumber: number, classificatiion: string) => {
   return axios
