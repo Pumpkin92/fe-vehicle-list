@@ -41,21 +41,32 @@ export default function VehicleList() {
     </div>
   );
 
-  const formElement = (
+  const formElementDesktop = (
     <form>
-      <p>Value Your Car</p>
-      <p>Find out the value of your car in just a few minutes</p>
-      <label htmlFor="vrm">VRM</label>
-      <input type="text" id="vrm" name="vrm" placeholder="Enter VRM" required />
-      <label htmlFor="mileage">Mileage</label>
-      <input
-        type="text"
-        id="mileage"
-        name="mileage"
-        placeholder="Enter mileage"
-        required
-      />
-      <button>Submit</button>
+      <div className="vehicle-container form-container ">
+        <p className="desk-form-title">Value your car</p>
+        <p className="desk-form-text">
+          Find out the value of your car in just a few minutes.
+        </p>
+
+        <div className="form-group">
+          <label className="desk-form-label" htmlFor="vrm">
+            VRM <span className="asterisk">*</span>
+          </label>
+          <input type="text" id="vrm" placeholder="Enter VRM" />
+        </div>
+
+        <div className="form-group">
+          <label className="desk-form-label" htmlFor="mileage">
+            Mileage <span className="asterisk">*</span>
+          </label>
+          <input type="text" id="mileage" placeholder="Enter mileage" />
+        </div>
+
+        <button className="desk-form-btn" type="submit">
+          Value my car
+        </button>
+      </div>
     </form>
   );
 
@@ -64,48 +75,66 @@ export default function VehicleList() {
 
   const vehiclesWithForm = [
     ...vehiclesArray.slice(0, middleIndex),
-    formElement,
+    formElementDesktop,
     ...vehiclesArray.slice(middleIndex),
   ];
 
   return isLoading ? (
     <h1>Loading...</h1>
   ) : (
-    <>
+    <div className="wrapper">
       <Navbar
         onSetClassification={handleSetClassification}
         classification={classification}
       />
       <main>
         <div className="controls">
-          <p>
+          <p className="mob-displayed-no-of-results">
             {" "}
             Showing {vehiclesData.data.length} of {vehiclesData.meta.total} cars
+          </p>
+          <p className="desk-tab-total-cars-no">
+            Showing {vehiclesData.meta.total} cars
           </p>
           <select name="orderBy" className="orderBy">
             <option value="lowest-price">Lowest Price</option>
             <option value="lowest-price">Highest Price</option>
           </select>
         </div>
-
-        {vehiclesWithForm.map((vehicle: object) => {
-          if (vehicle.type === "form") {
-            return formElementMobile;
-          } else {
-            return <VehicleCard vehicle={vehicle} key={vehicle.vehicle_id} />;
-          }
-        })}
+        <div className="mob-vehicle-container">
+          {vehiclesWithForm.map((vehicle: object) => {
+            if (vehicle.type === "form") {
+              return formElementMobile;
+            } else {
+              return <VehicleCard vehicle={vehicle} key={vehicle.vehicle_id} />;
+            }
+          })}
+        </div>
+        <div className="desk-vehicle-container">
+          {vehiclesWithForm.map((vehicle: object) => {
+            if (vehicle.type === "form") {
+              return formElementDesktop;
+            } else {
+              return <VehicleCard vehicle={vehicle} key={vehicle.vehicle_id} />;
+            }
+          })}
+        </div>
 
         <Pagination
           currentPageNumber={currentPageNumber}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
-
-        <div className="footer">
-          <a href="#top">Back to top</a>
+        <div className="order-footer-container">
+          <div className="footer">
+            <a href="#top">Back to top</a>
+          </div>
+          <select name="orderBy" className="orderBy-desktop-duplicate">
+            <option value="lowest-price">Lowest Price</option>
+            <option value="lowest-price">Highest Price</option>
+          </select>
         </div>
       </main>
-    </>
+    </div>
   );
 }
